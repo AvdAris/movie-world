@@ -31,6 +31,12 @@ if (postMovieBtn) {
       alert('Please fill in both fields.');
       return;
     }
+
+    if (title.length > 50) {
+      alert('Title must be 50 characters or less.');
+      return;
+    }
+
     fetch('/api/movies', {
       method: 'POST',
       headers: {
