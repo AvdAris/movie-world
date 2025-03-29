@@ -45,7 +45,7 @@ Built with **Vanilla PHP**, **MySQL**, and **JavaScript** — fully Dockerized f
 
 ```bash
 git clone https://github.com/AvdAris/movie-world.git
-cd movieworld
+cd movie-world
 ```
 
 ---
@@ -66,7 +66,6 @@ DB_ROOT_PASS=root
 
 # Application DB
 DB_NAME=movieworld
-DB_USER=appuser
 DB_PASS=apppass
 ```
 
