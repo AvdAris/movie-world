@@ -44,7 +44,7 @@ Built with **Vanilla PHP**, **MySQL**, and **JavaScript** — fully Dockerized f
 ### 📁 1. Clone the project
 
 ```bash
-git clone https://github.com/your-username/movieworld.git
+git clone https://github.com/AvdAris/movie-world.git
 cd movieworld
 ```
 
