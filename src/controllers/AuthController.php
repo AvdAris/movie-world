@@ -13,19 +13,39 @@ final class AuthController {
         $data = json_decode(file_get_contents("php://input"), true);
         $username = trim($data['username'] ?? '');
         $password = trim($data['password'] ?? '');
- 
+
+        if (strlen($password) < 6) {
+            return $this->json(["success" => false, "message" => "Password must be at least 6 characters."], 400);
+        }
+
+        if (!preg_match('/[A-Z]/', $password)) {
+            return $this->json(["success" => false, "message" => "Password must include at least one uppercase letter."], 400);
+        }
+    
+        if (!preg_match('/[a-z]/', $password)) {
+            return $this->json(["success" => false, "message" => "Password must include at least one lowercase letter."], 400);
+        }
+    
+        if (!preg_match('/[0-9]/', $password)) {
+            return $this->json(["success" => false, "message" => "Password must include at least one number."], 400);
+        }
+    
+        if (!preg_match('/[\W]/', $password)) {
+            return $this->json(["success" => false, "message" => "Password must include at least one special character."], 400);
+        }
+
         if (!$username || !$password) {
-            return $this->json(["success" => false, "message" => "Username and password required"], 400);
+            return $this->json(["success" => false, "message" => "Username and password required."], 400);
         }
 
         if ($this->userModel->findByUsername($username)) {
-            return $this->json(["success" => false, "message" => "Username already taken"], 409);
+            return $this->json(["success" => false, "message" => "Username already taken."], 409);
         }
 
         $userId = $this->userModel->create($username, $password);
         $_SESSION['username'] = $username;
         $_SESSION['user_id'] = $userId;
-        $this->json(["success" => true, "message" => "Signup successful"]);
+        $this->json(["success" => true, "message" => "Signup successful."]);
     }
 
     public function login() {
@@ -35,17 +55,17 @@ final class AuthController {
 
         $user = $this->userModel->findByUsername($username);
         if (!$user || !password_verify($password, $user['password'])) {
-            return $this->json(["success" => false, "message" => "Invalid credentials"], 401);
+            return $this->json(["success" => false, "message" => "Invalid credentials."], 401);
         }
 
         $_SESSION['username'] = $username;
         $_SESSION['user_id'] = $user['id'];
-        $this->json(["success" => true, "message" => "Login successful"]);
+        $this->json(["success" => true, "message" => "Login successful."]);
     }
 
     public function logout() {
         session_destroy();
-        $this->json(["success" => true, "message" => "Logged out"]);
+        $this->json(["success" => true, "message" => "Logged out."]);
     }
 
     private function json($data, $code = 200) {
