@@ -1,0 +1,36 @@
+services:
+  php:
+    build: .
+    env_file:
+      - .env
+    container_name: movieworld-php
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    networks:
+      - movieworld-network
+
+  mysql:
+    image: mysql:8
+    restart: always
+    container_name: movieworld-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_PASSWORD: ${DB_PASS}
+    ports:
+      - "3306:3306" 
+    networks:
+      - movieworld-network
+    volumes:
+      - movieworld-db-data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+networks:
+  movieworld-network:
+    driver: bridge
+
+volumes:
+  movieworld-db-data:
+    driver: local
