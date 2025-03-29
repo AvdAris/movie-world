@@ -32,8 +32,8 @@ if (postMovieBtn) {
       return;
     }
 
-    if (title.length > 50) {
-      alert('Title must be 50 characters or less.');
+    if (title.length > 40) {
+      alert('Title must be 40 characters or less.');
       return;
     }
 
