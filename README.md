@@ -93,9 +93,18 @@ The schema is automatically initialized on the first container run using:
 
 ### 🔹 Tables
 
-- `users` – stores user credentials (hashed passwords)
-- `movies` – title, description, timestamp, and user ID
-- `votes` – tracks each user's `like` or `hate` for each movie
+- **users**
+  - `id`, `name` (unique), `password`, `created_at`
+  - Stores user credentials (passwords are hashed)
+
+- **movies**
+  - `id`, `title`, `description`, `publication_date`, `user_id` (FK)
+  - Created by users; deleted if user is deleted
+
+- **votes**
+  - `id`, `user_id` (FK), `movie_id` (FK), `vote` (like/hate), `created_at`
+  - Each user can vote once per movie (unique constraint)
+  - Cascades on user/movie deletion
 
 All foreign keys cascade deletes properly.
 
@@ -160,6 +169,10 @@ All foreign keys cascade deletes properly.
 - 📈 **Scalability & UX**
   - Implement pagination to handle large movie lists efficiently
   - Make the UI fully responsive for mobile users
+  
+- 🧹 **Codebase Cleanup**
+  - Replace manual `require` statements with [Composer](https://getcomposer.org/) autoloading using PSR-4
+  - Organize PHP classes into proper namespaces for better maintainability and scalability
 
 - 🚀 **CI/CD Deployment**
   - Use GitHub Actions to automate build and deploy steps
